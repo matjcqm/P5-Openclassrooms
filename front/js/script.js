@@ -8,8 +8,9 @@ const urlcanapes = "http://localhost:3000/api/products";
 
 // Création et affichage des données de chaque canapé avec map dans le DOM
 
-const displayCanapes = async () => {
-  const tableauCanapes = await fetchData(urlcanapes);
+// displayCanapes = async () => {
+fetchData(urlcanapes).then((tableauCanapes) => {
+  console.log('toto');
   const carte = document.querySelector("#items");
   tableauCanapes.map((canape) => {
     const link = document.createElement("a");
@@ -30,6 +31,7 @@ const displayCanapes = async () => {
     description.classList.add("productDescription");
     article.appendChild(description);
   });
-};
+}).catch(error => console.log(error))
+// };
 
-displayCanapes();
+// displayCanapes();
