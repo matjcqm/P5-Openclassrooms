@@ -15,7 +15,7 @@ const urlProduct = `http://localhost:3000/api/products/${idProduct}`;
 
 const displayProduct = async () => {
   const product = await fetchData(urlProduct);
-  document.querySelector('title').innerHTML = `${product.name}`;
+  document.querySelector("title").innerHTML = `${product.name}`;
   document.querySelector(
     ".item__img"
   ).innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}" />`;
