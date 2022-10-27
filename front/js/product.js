@@ -19,7 +19,7 @@ const displayProduct = async () => {
   document.querySelector(
     ".item__img"
   ).innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}" />`;
-  document.querySelector("#title").innerHTML = `${product.name}`;
+  document.querySelector("#title").innerHTML = product.name;
   document.querySelector("#price").innerHTML = `${product.price}`;
   document.querySelector("#description").innerHTML = `${product.description}`;
   const colorList = document.querySelector("#colors");

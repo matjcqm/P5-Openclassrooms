@@ -1,18 +1,3 @@
-const todo = fetch("https://jsonplaceholder.typicode.com/todos/1")
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    throw new Error(res.status + " " + res.statusText);
-  })
-  .catch(err => {
-    console.error(`Network request fail !!\n${ err }`);
-  });
-export default await todo;
-
-
-
-
 // récupération du tableau des canapés dans l'API
 
 import { fetchData } from "./utils/fetch.js";
@@ -23,7 +8,6 @@ const urlcanapes = "http://localhost:3000/api/products";
 
 // Création et affichage des données de chaque canapé avec map dans le DOM
 
-// displayCanapes = async () => {
 function getProductsHtml(canape) {
   return `<a href="./product.html?id=${canape._id}">
             <article>
@@ -35,10 +19,10 @@ function getProductsHtml(canape) {
 }
 
 fetchData(urlcanapes)
-  .then((tableauCanapes) => {
+  .then((canapesApi) => {
     const carte = document.querySelector("#items");
     let html = "";
-    tableauCanapes.map((canape) => {
+    canapesApi.map((canape) => {
       html += getProductsHtml(canape);
     });
     carte.innerHTML = html;
@@ -48,7 +32,6 @@ fetchData(urlcanapes)
     console.log(error);
   });
 
-  
 // fetchData(urlcanapes)
 //   .then((tableauCanapes) => {
 //     const carte = document.querySelector("#items");
@@ -61,7 +44,7 @@ fetchData(urlcanapes)
 //       const image = new Image();
 //       image.setAttribute("src", canape.imageUrl);
 //       image.setAttribute("alt", canape.altTxt);
-//       article.appendChild(image);
+//       article.appendChild(image);++
 //       const name = document.createElement("h3");
 //       name.innerText = canape.name;
 //       name.classList.add("productName");
@@ -77,5 +60,3 @@ fetchData(urlcanapes)
 //     console.log(error);
 //   });
 // };
-
-// displayCanapes();
