@@ -52,7 +52,32 @@ fetchData(urlcanapes).then((canapesApi) => {
   }
 });
 
+// Calcul du nombre de produit dans le panier
 
+const quantityHtml = document.querySelector("#totalQuantity");
+let totalQuantity = 0;
+if (canapesCart) {
+  canapesCart.forEach((item) => {
+    totalQuantity += item.quantity;
+  });
+  quantityHtml.innerText = totalQuantity;
+} else {
+  quantityHtml.innerText = "0";
+}
+
+const totalPrice = document.querySelector("#totalPrice");
+// totalPrice.innerHTML = item.price
+
+// MESSAGE D'ERREUR SI PASSAGE D'UNE COMMANDE VIDE
+const order = document.querySelector("#order");
+order.addEventListener("click", function () {
+  if (canapesCart) {
+  } else {
+    window.alert("Votre panier est vide");
+  }
+});
+
+// ANCIEN CODE
 
 // const displayCart = async () => {
 // const tableauCanapes = await fetchData(urlcanapes); //Tableau des canapés de l'API
@@ -122,26 +147,3 @@ fetchData(urlcanapes).then((canapesApi) => {
 // };
 
 // displayCart();
-
-
-
-// Calcul du nombre de produit dans le panier
-
-// const totalQuantity = document.querySelector("#totalQuantity");
-// if (cartTableau) {
-//   cartTableau.forEach((canape) => {
-//     console.log(canape.quantity);
-//   });
-// }
-// totalQuantity.innerText = cartTableau.length;
-
-// const totalPrice = document.querySelector("#totalPrice");
-// // totalPrice.innerHTML = item.price
-
-// const order = document.querySelector("#order");
-// order.addEventListener("click", function () {
-//   if (cartTableau) {
-//   } else {
-//     window.alert("Votre panier est vide");
-//   }
-// });

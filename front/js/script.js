@@ -32,6 +32,9 @@ fetchData(urlcanapes)
     console.log(error);
   });
 
+
+// ANCIEN CODE
+
 // fetchData(urlcanapes)
 //   .then((tableauCanapes) => {
 //     const carte = document.querySelector("#items");
