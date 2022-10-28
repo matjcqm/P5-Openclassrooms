@@ -1,17 +1,19 @@
-// récupération du tableau du canapés dans l'API
-
+// Récupération d'un tableau depuis l'URL d'une API
 import { fetchData } from "./utils/fetch.js";
 
-// récupération du lien de l'API
-
+// Récupération du lien de l'API
 const urlcanapes = "http://localhost:3000/api/products";
 
-// récupération du tableau du LocalStorage
-
+// Récupération du tableau du LocalStorage
 let canapesCart = JSON.parse(localStorage.getItem("products"));
 
-// Affichage des produits qui se trouvent dans le LocalStorage
+// Création des constantes et variables utiles pour la suite
+const priceArray = [];
+const initValue = 0;
+const quantityHtml = document.querySelector("#totalQuantity");
+let totalQuantity = 0;
 
+// Fonction View, qui permet d'afficher l'HTML pour un produit du panier
 function getCartHtml(item, canape) {
   return `<article class="cart__item" data-id="${item.idProduct}" data-color="${item.color}">
             <div class="cart__item__img">
@@ -36,39 +38,64 @@ function getCartHtml(item, canape) {
           </article>`;
 }
 
+// Utilisation de la fonction importée avec l'URL de l'API
 fetchData(urlcanapes).then((canapesApi) => {
-  const carte = document.querySelector("#cart__items");
+  const cartCard = document.querySelector("#cart__items");
   let html = "";
+  // Création d'une carte HTML avec la fonction View pour CHAQUE canapé se trouvant dans le panier
   if (canapesCart) {
     canapesCart.map((item) => {
+      // Utilisation de find pour comparer l'ID du LS avec celui de l'API pour récupérer toutes les infos
       const canape = canapesApi.find(
         (canapId) => canapId._id == item.idProduct
       );
+      // Multiplication du tarif par le nombre de quantité de chaque canapé + le Push
+      priceArray.push(canape.price * item.quantity);
       html += getCartHtml(item, canape);
     });
-    carte.innerHTML = html;
+    cartCard.innerHTML = html;
+    // Affichage d'un message si le panier est vide
   } else {
-    carte.innerHTML = "<h2>Votre panier est vide</h2>";
+    cartCard.innerHTML = "<h2>Votre panier est vide</h2>";
   }
+  getTotalQuantity();
+  const total = sum(priceArray);
+  cartSomme(total);
 });
 
-// Calcul du nombre de produit dans le panier
 
-const quantityHtml = document.querySelector("#totalQuantity");
-let totalQuantity = 0;
-if (canapesCart) {
-  canapesCart.forEach((item) => {
-    totalQuantity += item.quantity;
-  });
-  quantityHtml.innerText = totalQuantity;
-} else {
-  quantityHtml.innerText = "0";
-}
+// Calcul de la quantité du panier
+const getTotalQuantity = () => {
+  if (canapesCart) {
+    canapesCart.forEach((item) => {
+      totalQuantity += item.quantity;
+    });
+    return (quantityHtml.innerText = totalQuantity);
+  } else {
+    return (quantityHtml.innerText = "0");
+  }
+};
 
-const totalPrice = document.querySelector("#totalPrice");
-// totalPrice.innerHTML = item.price
+// Fonction pour faire la somme d'un tableau
+const sum = (array) => {
+  const result = array.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    initValue
+  );
+  return result;
+};
 
-// MESSAGE D'ERREUR SI PASSAGE D'UNE COMMANDE VIDE
+// Affichage de la somme du panier
+const cartSomme = (total) => {
+  const priceHtml = document.querySelector("#totalPrice");
+  if (canapesCart) {
+    return (priceHtml.innerText = total);
+  } else {
+    return (priceHtml.innerText = "0");
+  }
+};
+
+// Message d'alerte si passage d'une commande vide
 const order = document.querySelector("#order");
 order.addEventListener("click", function () {
   if (canapesCart) {
@@ -81,7 +108,7 @@ order.addEventListener("click", function () {
 
 // const displayCart = async () => {
 // const tableauCanapes = await fetchData(urlcanapes); //Tableau des canapés de l'API
-// const carte = document.querySelector("#cart__items");
+// const cartCard = document.querySelector("#cart__items");
 // if (cartTableau) {
 //   cartTableau.map((item) => {
 //     const canape = tableauCanapes.find(
@@ -91,7 +118,7 @@ order.addEventListener("click", function () {
 //   article.classList.add("cart__item");
 //   article.setAttribute("data-id", item.idProduct);
 //   article.setAttribute("data-color", item.color);
-//   carte.appendChild(article);
+//   cartCard.appendChild(article);
 //   const divImage = document.createElement("div");
 //   divImage.classList.add("cart__item__img");
 //   article.appendChild(divImage);
@@ -142,7 +169,7 @@ order.addEventListener("click", function () {
 //   } else {
 //     const text = document.createElement("h2");
 //     text.innerHTML = "Votre panier est vide";
-//     carte.appendChild(text);
+//     cartCard.appendChild(text);
 //   }
 // };
 
