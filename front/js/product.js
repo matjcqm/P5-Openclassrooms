@@ -1,18 +1,14 @@
-// récupération du tableau du canapés dans l'API
-
+// Récupération d'un tableau depuis l'URL d'une API
 import { fetchData } from "./utils/fetch.js";
 
-// récupération de l'ID du produit dans l'URL
-
+// Récupération de l'ID du produit dans l'URL
 const params = window.location.search;
 const idProduct = new URLSearchParams(params).get("id");
 
 // récupération du lien de l'API lié au produit
-
 const urlProduct = `http://localhost:3000/api/products/${idProduct}`;
 
 // Création et affichage des données du produit dans le DOM
-
 const displayProduct = async () => {
   const product = await fetchData(urlProduct);
   document.querySelector("title").innerHTML = `${product.name}`;
@@ -25,7 +21,6 @@ const displayProduct = async () => {
   const colorList = document.querySelector("#colors");
 
   // Boucle de création d'une balise 'option' par couleur sur le produit
-
   product.colors.map((color) => {
     const optionColor = document.createElement("option");
     optionColor.innerHTML = color;

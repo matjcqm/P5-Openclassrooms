@@ -50,8 +50,8 @@ fetchData(urlcanapes).then((canapesApi) => {
         (canapId) => canapId._id == item.idProduct
       );
       // Multiplication du tarif par le nombre de quantité de chaque canapé + le Push
-      priceArray.push(canape.price * item.quantity);
       html += getCartHtml(item, canape);
+      priceArray.push(canape.price * item.quantity);
     });
     cartCard.innerHTML = html;
     // Affichage d'un message si le panier est vide
@@ -62,7 +62,6 @@ fetchData(urlcanapes).then((canapesApi) => {
   const total = sum(priceArray);
   cartSomme(total);
 });
-
 
 // Calcul de la quantité du panier
 const getTotalQuantity = () => {
@@ -94,6 +93,19 @@ const cartSomme = (total) => {
     return (priceHtml.innerText = "0");
   }
 };
+
+// Fonction de suppression de produit
+const deleteProduct = () => {
+  const deleteBtn = document.querySelectorAll(".deleteItem");
+  console.log(deleteBtn);
+  for (let deleteClick of deleteBtn) {
+    deleteClick.addEventListener("click", function () {
+      window.alert("Article supprimé");
+    });
+  }
+};
+
+deleteProduct();
 
 // Message d'alerte si passage d'une commande vide
 const order = document.querySelector("#order");
