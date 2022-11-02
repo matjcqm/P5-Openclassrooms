@@ -5,7 +5,7 @@ import { fetchData } from "./utils/fetch.js";
 const urlcanapes = "http://localhost:3000/api/products";
 
 // Récupération du tableau du LocalStorage
-let canapesCart = JSON.parse(localStorage.getItem("products"));
+let canapesCart = JSON.parse(localStorage.getItem("products")) ?? [];
 
 // Création des constantes et variables utiles pour la suite
 const priceArray = [];
@@ -43,7 +43,7 @@ fetchData(urlcanapes).then((canapesApi) => {
   const cartCard = document.querySelector("#cart__items");
   let html = "";
   // Création d'une carte HTML avec la fonction View pour CHAQUE canapé se trouvant dans le panier
-  if (canapesCart) {
+  if (canapesCart.length) {
     canapesCart.map((item) => {
       // Utilisation de find pour comparer l'ID du LS avec celui de l'API pour récupérer toutes les infos
       const canape = canapesApi.find(
@@ -56,11 +56,15 @@ fetchData(urlcanapes).then((canapesApi) => {
     cartCard.innerHTML = html;
     // Affichage d'un message si le panier est vide
   } else {
-    cartCard.innerHTML = "<h2>Votre panier est vide</h2>";
+    cartCard.innerHTML = "<h1>est vide</h1>";
   }
   getTotalQuantity();
   const total = sum(priceArray);
   cartSomme(total);
+  const deleteBtns = document.querySelectorAll(".deleteItem");
+  for (const btn of deleteBtns) {
+    btn.onclick = deleteItem;
+  }
 });
 
 // Calcul de la quantité du panier
@@ -94,18 +98,18 @@ const cartSomme = (total) => {
   }
 };
 
-// Fonction de suppression de produit
-const deleteProduct = () => {
-  const deleteBtn = document.querySelectorAll(".deleteItem");
-  console.log(deleteBtn);
-  for (let deleteClick of deleteBtn) {
-    deleteClick.addEventListener("click", function () {
-      window.alert("Article supprimé");
-    });
-  }
-};
-
-deleteProduct();
+// Function du bouton Supprimer
+function deleteItem(event) {
+  let article = event.target.closest("article");
+  window.confirm("Voulez-vous vraiment supprimer cet article");
+  article.remove();
+  const result = canapesCart.filter((el) => {
+    return (
+      el.idProduct != article.dataset.id && el.color != article.dataset.color
+    );
+  });
+  localStorage.products = JSON.stringify(result);
+}
 
 // Message d'alerte si passage d'une commande vide
 const order = document.querySelector("#order");

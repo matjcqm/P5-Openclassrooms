@@ -18,14 +18,16 @@ const displayProduct = async () => {
   document.querySelector("#title").innerHTML = product.name;
   document.querySelector("#price").innerHTML = `${product.price}`;
   document.querySelector("#description").innerHTML = `${product.description}`;
-  const colorList = document.querySelector("#colors");
+  const select = document.querySelector("#colors");
 
   // Boucle de création d'une balise 'option' par couleur sur le produit
   product.colors.map((color) => {
     const optionColor = document.createElement("option");
-    optionColor.innerHTML = color;
-    optionColor.setAttribute("value", color);
-    colorList.appendChild(optionColor);
+    optionColor.text = color;
+    select.add(optionColor)
+    // optionColor.innerHTML = color;
+    // optionColor.setAttribute("value", color);
+    // colorList.appendChild(optionColor);
   });
 };
 displayProduct();
@@ -43,7 +45,7 @@ addCart.addEventListener("click", (e) => {
     quantity,
     color,
   };
-  let cartItems = JSON.parse(localStorage.getItem("products")) || []; // On récupère le tableau du LocalStorage ou alors création d'un tableau vide
+  let cartItems = JSON.parse(localStorage.getItem("products")) ?? []; // On récupère le tableau du LocalStorage ou alors création d'un tableau vide
   let cartItem = cartItems.find(
     (item) => item.idProduct == idProduct && item.color == color
   ); // Fonction find pour vérifier si l'ID et la couleur sont similaires
