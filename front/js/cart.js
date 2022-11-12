@@ -146,6 +146,19 @@ order.addEventListener("click", function () {
   }
 });
 
+// Regex FirstName
+let form = document.querySelector(".cart__order__form");
+form.firstName.addEventListener("change", function () {
+  validFirstName(this);
+});
+const validFirstName = function (inputFirstName) {
+  let firstNameRegExp = new RegExp("(^[a-zA-Zéè -]{2,30}$)");
+  let errorFirstName = document.querySelector("#firstNameErrorMsg");
+  if (firstNameRegExp.test(inputFirstName.value) == false) {
+    errorFirstName.innerHTML = "Prénom invalide";
+  }
+};
+
 // ANCIEN CODE
 
 // const displayCart = async () => {
