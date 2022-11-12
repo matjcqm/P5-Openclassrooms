@@ -65,6 +65,10 @@ fetchData(urlcanapes).then((canapesApi) => {
   for (const btn of deleteBtns) {
     btn.onclick = deleteItem;
   }
+  const itemQuantity = document.querySelectorAll(".itemQuantity");
+  for (const quantity of itemQuantity) {
+    quantity.onchange = changeQuantity;
+  }
 });
 
 // Calcul de la quantité du panier
@@ -105,10 +109,32 @@ function deleteItem(event) {
   article.remove();
   const result = canapesCart.filter((el) => {
     return (
-      el.idProduct != article.dataset.id && el.color != article.dataset.color
+      el.idProduct !== article.dataset.id && el.color !== article.dataset.color
     );
   });
-  localStorage.products = JSON.stringify(result);
+  console.log(result);
+  console.log(canapesCart);
+  // localStorage.products = JSON.stringify(result);
+}
+
+// Fonction changement de quantité
+function changeQuantity(event) {
+  let article = event.target.closest("article");
+  const itemQuantity = document.querySelector(".itemQuantity");
+  let result = canapesCart.find((el) => {
+    if (
+      el.idProduct === article.dataset.id &&
+      el.color === article.dataset.color
+    ) {
+      console.log(itemQuantity.value);
+      return itemQuantity.value;
+    }
+  });
+  // console.log(itemQuantity.value);
+  // console.log(result);
+  // console.log(canapesCart);
+  result.quantity = parseInt(itemQuantity.value);
+  localStorage.products = JSON.stringify(canapesCart);
 }
 
 // Message d'alerte si passage d'une commande vide
