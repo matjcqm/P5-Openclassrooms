@@ -49,7 +49,7 @@ fetchData(urlcanapes).then((canapesApi) => {
       const canape = canapesApi.find(
         (canapId) => canapId._id == item.idProduct
       );
-      products.push(item.idProduct);
+      // products.push(item.idProduct);
 
       // Multiplication du tarif par le nombre de quantité de chaque canapé + le Push
       html += getCartHtml(item, canape);
@@ -181,23 +181,24 @@ const testRegex = (element, regex, id) => {
   }
 };
 
-const products = [];
-
 // fonction de récupération des ID du panier (à mettre dans la fonction du bouton submit)
-// canapesCart.map((canape) => {
-//   products.push(canape.idProduct);
-// });
+let products = [];
+canapesCart.map((canape) => {
+  products.push(canape.idProduct);
+});
 
 // Création du tableau à envoyer
-const data = {
+let data = {
   contact,
   products,
 };
 
+// Suppression des ID en double dans le tableau
+products = [...new Set(products)];
+
 // form.order.addEventListener("submit", () => {
 //   console.log("Le bouton fonctionne");
 // });
-console.log(data);
 // ANCIEN CODE
 
 // const displayCart = async () => {
