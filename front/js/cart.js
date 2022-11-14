@@ -139,19 +139,46 @@ order.addEventListener("click", function () {
   }
 });
 
-// Regex FirstName
-let form = document.querySelector(".cart__order__form");
-form.firstName.addEventListener("change", function () {
-  validFirstName(this);
-});
-const validFirstName = function (inputFirstName) {
-  let firstNameRegExp = new RegExp("(^[a-zA-Zéèêëàâäîïôöûüùç- ]{2,}$)");
-  let errorFirstName = document.querySelector("#firstNameErrorMsg");
-  if (firstNameRegExp.test(inputFirstName.value) == false) {
-    errorFirstName.innerHTML = "Prénom invalide";
+// Déclaration des variables pour l'utilision des regex
+const form = document.querySelector(".cart__order__form");
+const regex = {
+  firstName: new RegExp("(^[a-zA-Zéè -]{2,20}$)"),
+  lastName: new RegExp("(^[a-zA-Z -]{2,30}$)"),
+  address: new RegExp("(^[a-zA-Zéè 0-9,-]{4,50}$)"),
+  city: new RegExp("(^[a-zA-Zàéè -]{4,30}$)"),
+  email: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+};
+
+for (let element of form) {
+  element.onchange = () => {
+    testRegex(element, regex[element.id], element.id);
+  };
+}
+
+// Test de fonction généralisé pour les Regex
+const testRegex = (element, regex, id) => {
+  if (regex.test(element.value)) {
+    document.querySelector(`#${id}ErrorMsg`).innerText = "";
+  } else {
+    document.querySelector(
+      `#${id}ErrorMsg`
+    ).innerText = `L'information ${id} n'est pas valide`;
   }
 };
 
+// const nameRegExp = new RegExp("(^[a-zA-Zéè -]{2,20}$)");
+// form.firstName.addEventListener("change", function () {
+//   validFirstName(this);
+// });
+
+// const validFirstName = function (inputFirstName) {
+//   let errorFirstName = document.querySelector("#firstNameErrorMsg");
+//   if (nameRegExp.test(inputFirstName.value)) {
+//     errorFirstName.innerHTML = "";
+//   } else {
+//     errorFirstName.innerHTML = "Prénom invalide";
+//   }
+// };
 
 // ANCIEN CODE
 
