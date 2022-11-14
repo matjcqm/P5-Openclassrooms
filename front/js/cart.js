@@ -106,35 +106,28 @@ const cartSomme = (total) => {
 function deleteItem(event) {
   let article = event.target.closest("article");
   window.confirm("Voulez-vous vraiment supprimer cet article");
-  article.remove();
-  const result = canapesCart.filter((el) => {
-    return (
-      el.idProduct !== article.dataset.id && el.color !== article.dataset.color
-    );
-  });
+  const result = canapesCart.filter(
+    (el) =>
+      el.idProduct !== article.dataset.id || el.color !== article.dataset.color
+  );
   console.log(result);
   console.log(canapesCart);
-  // localStorage.products = JSON.stringify(result);
+  localStorage.products = JSON.stringify(result);
+  window.location.reload();
 }
 
 // Fonction changement de quantité
 function changeQuantity(event) {
   let article = event.target.closest("article");
-  const itemQuantity = document.querySelector(".itemQuantity");
   let result = canapesCart.find((el) => {
-    if (
-      el.idProduct === article.dataset.id &&
-      el.color === article.dataset.color
-    ) {
-      console.log(itemQuantity.value);
-      return itemQuantity.value;
-    }
+    return (
+      el.idProduct === article.dataset.id && el.color === article.dataset.color
+    );
   });
-  // console.log(itemQuantity.value);
-  // console.log(result);
-  // console.log(canapesCart);
-  result.quantity = parseInt(itemQuantity.value);
+  console.log(result);
+  result.quantity = parseInt(event.target.value);
   localStorage.products = JSON.stringify(canapesCart);
+  window.location.reload();
 }
 
 // Message d'alerte si passage d'une commande vide
@@ -152,12 +145,13 @@ form.firstName.addEventListener("change", function () {
   validFirstName(this);
 });
 const validFirstName = function (inputFirstName) {
-  let firstNameRegExp = new RegExp("(^[a-zA-Zéè -]{2,30}$)");
+  let firstNameRegExp = new RegExp("(^[a-zA-Zéèêëàâäîïôöûüùç- ]{2,}$)");
   let errorFirstName = document.querySelector("#firstNameErrorMsg");
   if (firstNameRegExp.test(inputFirstName.value) == false) {
     errorFirstName.innerHTML = "Prénom invalide";
   }
 };
+
 
 // ANCIEN CODE
 
