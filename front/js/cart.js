@@ -49,6 +49,8 @@ fetchData(urlcanapes).then((canapesApi) => {
       const canape = canapesApi.find(
         (canapId) => canapId._id == item.idProduct
       );
+      products.push(item.idProduct);
+
       // Multiplication du tarif par le nombre de quantité de chaque canapé + le Push
       html += getCartHtml(item, canape);
       priceArray.push(canape.price * item.quantity);
@@ -131,16 +133,27 @@ function changeQuantity(event) {
 }
 
 // Message d'alerte si passage d'une commande vide
-const order = document.querySelector("#order");
-order.addEventListener("click", function () {
-  if (canapesCart) {
-  } else {
-    window.alert("Votre panier est vide");
-  }
-});
+// const order = document.querySelector("#order");
+// order.addEventListener("click", function () {
+//   if (canapesCart) {
+//   } else {
+//     window.alert("Votre panier est vide");
+//   }
+// });
 
 // Déclaration des variables pour l'utilision des regex
 const form = document.querySelector(".cart__order__form");
+
+// Création de la variable contact pour pouvoir récuperer les input et les insérer dans le tableau à envoyer
+let contact = {
+  firstName: "",
+  lastName: "",
+  address: "",
+  city: "",
+  email: "",
+};
+
+// Création des regex
 const regex = {
   firstName: new RegExp("(^[a-zA-Zéè -]{2,20}$)"),
   lastName: new RegExp("(^[a-zA-Z -]{2,30}$)"),
@@ -149,15 +162,17 @@ const regex = {
   email: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
 };
 
+// Boucle pour tester chaque éléments du formulaire
 for (let element of form) {
   element.onchange = () => {
     testRegex(element, regex[element.id], element.id);
   };
 }
 
-// Test de fonction généralisé pour les Regex
+// Fonction pour vérifier les inputs par rapport aux regex et les insérer dans la variable contact
 const testRegex = (element, regex, id) => {
   if (regex.test(element.value)) {
+    contact[id] = element.value;
     document.querySelector(`#${id}ErrorMsg`).innerText = "";
   } else {
     document.querySelector(
@@ -166,20 +181,23 @@ const testRegex = (element, regex, id) => {
   }
 };
 
-// const nameRegExp = new RegExp("(^[a-zA-Zéè -]{2,20}$)");
-// form.firstName.addEventListener("change", function () {
-//   validFirstName(this);
+const products = [];
+
+// fonction de récupération des ID du panier (à mettre dans la fonction du bouton submit)
+// canapesCart.map((canape) => {
+//   products.push(canape.idProduct);
 // });
 
-// const validFirstName = function (inputFirstName) {
-//   let errorFirstName = document.querySelector("#firstNameErrorMsg");
-//   if (nameRegExp.test(inputFirstName.value)) {
-//     errorFirstName.innerHTML = "";
-//   } else {
-//     errorFirstName.innerHTML = "Prénom invalide";
-//   }
-// };
+// Création du tableau à envoyer
+const data = {
+  contact,
+  products,
+};
 
+// form.order.addEventListener("submit", () => {
+//   console.log("Le bouton fonctionne");
+// });
+console.log(data);
 // ANCIEN CODE
 
 // const displayCart = async () => {
