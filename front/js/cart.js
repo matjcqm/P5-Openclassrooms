@@ -187,18 +187,32 @@ canapesCart.map((canape) => {
   products.push(canape.idProduct);
 });
 
+// Suppression des ID en double dans le tableau
+products = [...new Set(products)];
+
 // Création du tableau à envoyer
 let data = {
   contact,
   products,
 };
 
-// Suppression des ID en double dans le tableau
-products = [...new Set(products)];
+form.addEventListener("submit", submit);
+console.log(Object.values(data.contact));
 
-// form.order.addEventListener("submit", () => {
-//   console.log("Le bouton fonctionne");
-// });
+function submit() {
+  if (Object.values(data.contact) == `""`) {
+    console.log("Un champ est invalide");
+  } else {
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+}
+
 // ANCIEN CODE
 
 // const displayCart = async () => {
