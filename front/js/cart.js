@@ -153,6 +153,8 @@ let contact = {
   email: "",
 };
 
+let regexOk = [];
+
 // Création des regex
 const regex = {
   firstName: new RegExp("(^[a-zA-Zéè -]{2,20}$)"),
@@ -172,9 +174,15 @@ for (let element of form) {
 // Fonction pour vérifier les inputs par rapport aux regex et les insérer dans la variable contact
 const testRegex = (element, regex, id) => {
   if (regex.test(element.value)) {
+    if (!regexOk.includes(element.id)) {
+      regexOk.push(element.id);
+    }
     contact[id] = element.value;
     document.querySelector(`#${id}ErrorMsg`).innerText = "";
   } else {
+    if (regexOk.includes(element.id)) {
+      regexOk.splice(regexOk.indexOf(element.id), 1);
+    }
     document.querySelector(
       `#${id}ErrorMsg`
     ).innerText = `L'information ${id} n'est pas valide`;
@@ -197,19 +205,25 @@ let data = {
 };
 
 form.addEventListener("submit", submit);
-console.log(Object.values(data.contact));
 
-function submit() {
-  if (Object.values(data.contact) == `""`) {
-    console.log("Un champ est invalide");
-  } else {
+function submit(event) {
+  event.preventDefault();
+  if (regexOk.length == 5) {
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data.orderId);
+      });
+  } else {
+    console.log("Un champ est invalide");
   }
 }
 
