@@ -220,10 +220,13 @@ function submit(event) {
         return res.json();
       })
       .then((data) => {
-        console.log(data.orderId);
+        // Vide le localStorage
+        localStorage.clear();
+        // Ouvre la page de confirmation avec le numéro de commande dans l'URL
+        window.location.href = `../html/confirmation.html?order_id=${data.orderId}`;
       });
   } else {
-    console.log("Un champ est invalide");
+    window.alert("Un champ est invalide");
   }
 }
 
