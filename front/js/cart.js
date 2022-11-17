@@ -112,8 +112,6 @@ function deleteItem(event) {
     (el) =>
       el.idProduct !== article.dataset.id || el.color !== article.dataset.color
   );
-  console.log(result);
-  console.log(canapesCart);
   localStorage.products = JSON.stringify(result);
   window.location.reload();
 }
@@ -135,8 +133,7 @@ function changeQuantity(event) {
 // Message d'alerte si passage d'une commande vide
 // const order = document.querySelector("#order");
 // order.addEventListener("click", function () {
-//   if (canapesCart) {
-//   } else {
+//   if (!canapesCart) {
 //     window.alert("Votre panier est vide");
 //   }
 // });
@@ -153,6 +150,7 @@ let contact = {
   email: "",
 };
 
+// Création d'un tableau dans lequel on envoie les champs si le test des Regex est OK
 let regexOk = [];
 
 // Création des regex
@@ -206,27 +204,34 @@ let data = {
 
 form.addEventListener("submit", submit);
 
+// Fonction du bouton Submit pour envoyer le formulaire
 function submit(event) {
   event.preventDefault();
-  if (regexOk.length == 5) {
-    fetch("http://localhost:3000/api/products/order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        return res.json();
+  // Vérification si il y a quelquechose dans le panier
+  if (canapesCart.length != 0) {
+    // Si notre tableau comporte les 5 champs OK, on passe à la suite
+    if (regexOk.length == 5) {
+      fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       })
-      .then((data) => {
-        // Vide le localStorage
-        localStorage.clear();
-        // Ouvre la page de confirmation avec le numéro de commande dans l'URL
-        window.location.href = `../html/confirmation.html?order_id=${data.orderId}`;
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          // Vide le localStorage
+          localStorage.clear();
+          // Ouvre la page de confirmation avec le numéro de commande dans l'URL
+          window.location.href = `../html/confirmation.html?order_id=${data.orderId}`;
+        });
+    } else {
+      window.alert("Un champ est invalide");
+    }
   } else {
-    window.alert("Un champ est invalide");
+    window.alert("Votre panier est vide");
   }
 }
 

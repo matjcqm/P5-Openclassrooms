@@ -24,10 +24,7 @@ const displayProduct = async () => {
   product.colors.map((color) => {
     const optionColor = document.createElement("option");
     optionColor.text = color;
-    select.add(optionColor)
-    // optionColor.innerHTML = color;
-    // optionColor.setAttribute("value", color);
-    // colorList.appendChild(optionColor);
+    select.add(optionColor);
   });
 };
 displayProduct();
