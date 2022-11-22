@@ -118,16 +118,22 @@ function deleteItem(event) {
 
 // Fonction changement de quantité
 function changeQuantity(event) {
-  let article = event.target.closest("article");
-  let result = canapesCart.find((el) => {
-    return (
-      el.idProduct === article.dataset.id && el.color === article.dataset.color
-    );
-  });
-  console.log(result);
-  result.quantity = parseInt(event.target.value);
-  localStorage.products = JSON.stringify(canapesCart);
-  window.location.reload();
+  let newQuantity = parseInt(event.target.value);
+  if (newQuantity > 0 && newQuantity < 101) {
+    let article = event.target.closest("article");
+    let result = canapesCart.find((el) => {
+      return (
+        el.idProduct === article.dataset.id &&
+        el.color === article.dataset.color
+      );
+    });
+    console.log(result);
+    result.quantity = newQuantity;
+    localStorage.products = JSON.stringify(canapesCart);
+    window.location.reload();
+  } else {
+    window.alert("ERREUR");
+  }
 }
 
 // Message d'alerte si passage d'une commande vide
@@ -168,6 +174,9 @@ for (let element of form) {
     testRegex(element, regex[element.id], element.id);
   };
 }
+
+// const dataForm = Object.fromEntries(new FormData(form));
+// console.log(dataForm);
 
 // Fonction pour vérifier les inputs par rapport aux regex et les insérer dans la variable contact
 const testRegex = (element, regex, id) => {

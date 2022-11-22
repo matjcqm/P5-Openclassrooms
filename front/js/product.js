@@ -46,16 +46,25 @@ addCart.addEventListener("click", (e) => {
   let cartItem = cartItems.find(
     (item) => item.idProduct == idProduct && item.color == color
   ); // Fonction find pour vérifier si l'ID et la couleur sont similaires
-  if (!color || quantity <= 0) {
+  if (!color || quantity <= 0 || quantity > 101) {
     // Affichage d'un message d'erreur si il n'y a pas de couleur ou de quantité sélectionnée
-    window.alert("Veuillez choisir une couleur et une quantité");
+    window.alert(
+      "Veuillez choisir une couleur et une quantité comprise entre 1 et 100"
+    );
   } else if (cartItem) {
-    // Si la fonction find is true, aditionner les quantités
-    cartItem.quantity = parseInt(cartItem.quantity) + quantity;
+    // Si la fonction find is true, aditionner les quantités si celle si n'excède pas 100
+    if (parseInt(cartItem.quantity) + quantity < 101) {
+      cartItem.quantity = parseInt(cartItem.quantity) + quantity;
+      window.alert("Votre produit a été ajouté au panier");
+    } else {
+      window.alert(
+        "Vous ne pouvez commander que 100 exemplaires d'un même canapé"
+      );
+    }
   } else {
     // Sinon ajouter le produit dans le tableau du LocalStorage
     cartItems.push(productOptions);
+    window.alert("Votre produit a été ajouté au panier");
   }
   localStorage.setItem("products", JSON.stringify(cartItems)); // Envoie du tableau dans le LocalStorage
-  window.alert("Votre produit a été ajouté au panier"); // Message de validation du panier
 });
